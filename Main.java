@@ -40,8 +40,11 @@ class Main{
 	  int CTcount = 5;
 	  Random rand = new Random();
 	  int n = rand.nextInt(10);
-	  Random rand1 = new Random();
 	  int n1 = rand.nextInt(4);
+	  boolean BombPlanted = false;
+	  int BombTime = 0;
+	  boolean JihadTime = false;
+	  boolean Won = false;
 	  Scanner sc = new Scanner(System.in);
 	  
 	  String y = sc.nextLine().toLowerCase();
@@ -73,16 +76,16 @@ class Main{
 		if(side.equals("a")){
 			T = true;
 			picked = true;
-		
-		if(side.equals("b")){
-			System.out.println("LOL no the budget is too low your a terrorist");
+		}
+		else if(side.equals("b")){
+			System.out.println("The budget is too low you're a terrorist");
 			try {Thread.sleep(1000);} catch(InterruptedException e){}
 			T = true;
 			picked = true;
 			}
-		}
 		else{
 			System.out.println("Game Over");
+			System.exit(0);
 		}
 	}
 	else{
@@ -95,16 +98,19 @@ class Main{
 	if(a1.equals("a")){
 		System.out.println("Filthy casual, Went to Cache");
 		cache = true;
-	
-	if(a1.equals("b")){
+	}
+	else if(a1.equals("b")){
 		System.out.println("Went to Cache");
 		cache = true;
 	// insert cache map here
 		}
-	}
+	
 	else{
 		System.out.println("Game Over");
+		System.exit(0);
+
 	}
+}
 	try {Thread.sleep(2000);} catch(InterruptedException e){}
 
 	if(cache == true){
@@ -122,9 +128,10 @@ class Main{
 	if(a2.equals(a)){
 		System.out.println("You got him");
 		killed1 = true;
+		CTcount -= 1;
 	}
 	else { 
-	System.out.println("Game Over");
+	System.out.println("Intercom(Don't do that again)");
 	}	
 	if(killed1 = true && T == true){
 		System.out.println("That was just a warmup the real game will start now!");
@@ -140,70 +147,119 @@ class Main{
 		GarageT = true;
 		
 			}
-	if(choice1T.equals("b")){
+	else if(choice1T.equals("b")){
 		System.out.println("Went to Squeaky");
 		SqueakyT = true;
 	}
 	else{
 	System.out.println("Game Over");
+	System.exit(0);
+
 	}
 	String b =  alphabet.charAt(r.nextInt(alphabet.length())) + "";
+	String a5 = "";
+
 	if(n > 4){
 	killed1 = false;
 	Time = 6;
 	timer.schedule(new AddScore(), 0, 1000);
 	
 	System.out.println("You enountered a counter terrorist click "+ b +" to fire!, btw you have 5 seconds");
-
+	
 	String a3 = sc.nextLine();
 
 	if(a3.equals(b)){
-		System.out.println("You got him, B site seems clear, would you like to plant the bomb[a] or retreat[b]");
-		
-		}	
-	}
+		killed1 = true;
+		System.out.println("You got him, B site seems clear but you will have to look for yourself,");
+	}	
+
 	else{
-	killed1 = true;
+	System.out.println("Game Over");
+	System.exit(0);
+		}
+	}
 	
-	System.out.println("Theres no one here would you like to go back[a] or enter A site[b]");
+	System.out.println("There's no one here would you like to enter A site[a] or go back[b]");
+	
 	String a4 = sc.nextLine();
-	if(a4.equals("a")){
+
+	if(a4.equals("b")){
 	System.out.println("Would you like to go to Garage[a] or Squeaky[b] ");
 	}
-	if(a4.equals("b")){
+	if(a4.equals("a")){
 	String c =  alphabet.charAt(r.nextInt(alphabet.length())) + "";
-//	Time = 6;
-//	timer.schedule(new AddScore(), 0, 1000);
+
 	if(n1 <= 5){
 		System.out.println("B site seems clear, would you like to plant the bomb[a] or retreat to Squeaky[b]");	
 	}
 	else{
 	System.out.println("You enountered a counter terrorist click "+ c +" to fire!, btw you have 5 seconds");
 	}
-	String a5 = sc.nextLine();
+	a5 = sc.nextLine();
 	if(a5.equals("a")){
-		System.out.println("The bomb has been planted, The CTs have 30 seconds to defuse it!");
+	System.out.println("The bomb has been planted, The CTs have 30 seconds to defuse it!");
+	BombPlanted = true;
+	killed1 = false;
+	Time = 31;
+
+	timer.schedule(new AddScore(), 0, 1000);
+
+	Random rand2 = new Random();
+	
+	while (Time > 0 && CTcount > 1){
+	try {Thread.sleep(1000);} catch(InterruptedException e){}
+	int o = rand2.nextInt(5);
+	String d =  alphabet.charAt(r.nextInt(alphabet.length())) + "";
+
+	if(o == 4){
+	BombTime = Time;
+	JihadTime = true;
+	System.out.println("You enountered a counter terrorist click "+ d +" to fire!, btw you have 5 seconds");
+	Time = 6;
+	
+	String a6 = sc.nextLine();
+
+	if(a6.equals(d)){
+		CTcount -= 1;
+		System.out.println("You got him, there are still " + CTcount + " CTs left");
+		Time = BombTime;
+		}
+
+	else if(!a6.equals(d)){
+		System.out.println("Game Over");
+		System.exit(0);
+		}
+
+	if(CTcount < 1){
+		System.out.println("All of the Counter Terrorists are Dead you Win!");
+		System.exit(0);	
+			}
+		}	
 	}
+	
 	if(a5.equals("b")){
 		System.out.println("You are in Squeaky ");
 							}
 						}
-					}
-				}					
-			}
-		}	
-	}
-}
-class AddScore extends TimerTask {
+					}					
+				}
+			}	
+		}
+static class AddScore extends TimerTask {
     public void run() {
-
 		if(Main.Time > 1 && Main.killed1 == false){
-			Main.Time -= 1;
+		Main.Time -= 1;
 		System.out.println(Integer.toString(Main.Time));
 	}
-		
+
 		else if(Main.killed1 == false && Main.Time == 0){
 		System.out.println("Game Over");
+		System.exit(0);
+				}
+		//else if(Main.Killed1 = false && Main.Time == 0 && Main.JihadTime == true){
+		//System.out.println("You Win");
+		//System.exit(0);
+		//	}
 		}
 	}
 }
